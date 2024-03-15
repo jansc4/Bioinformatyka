@@ -1,5 +1,7 @@
 import numpy as np
 
+from Dotplot import Dotplot
+
 
 class Sequence:
     def __init__(self, seq, name="default", id=000000):
@@ -22,8 +24,5 @@ class Sequence:
                     dp[i, j] = 1
                 else:
                     dp[i, j] = 0
-        return dp
+        return Dotplot(dp)
 
-
-# %%
-import requests

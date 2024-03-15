@@ -1,6 +1,6 @@
 import requests
-import Sequence
-import Dotplot
+from Sequence import Sequence
+from Dotplot import Dotplot
 import re
 
 
@@ -29,7 +29,7 @@ def seqConstructor(fasta_data):
         id = match.group(1)
         name = match.group(2)
 
-    protein = Sequence(seq, id=id, name=name)
+    protein = Sequence(seq, id, name)
     return protein
 
 
@@ -75,12 +75,19 @@ def start():
         else:
             print("Błędna opcja")
 
+def filter(dotplot, threshold, window):
+
+
+    return dotplot
 
 print("Wybierz pierwszą sekwencję:")
-seq1 = start()
+#seq1 = start()
 print("Wybierz drugą sekwencję:")
-seq2 = start()
-dp = Dotplot(seq1.dotplot(seq2))
+#seq2 = start()
+seq1 = Sequence("MVHLTDAEKSAVSCLWAKVNPDEVGGEALGRLLVVYPWTQRYFDSFGDLSSASAIMGNPKVKAHGKKVITAFNEGLKNLDNLKGTFASLSELHCDKLHVDPENFRLLGNAIVIVLGHHLGKDFTPAAQAAFQKVVAGVATALAHKYH", "human", "P02089")
+seq2 = Sequence("MVHLTPEEKSAVTALWGKVNVDEVGGEALGRLLVVYPWTQRFFESFGDLSTPDAVMGNPKVKAHGKKVLGAFSDGLAHLDNLKGTFATLSELHCDKLHVDPENFRLLGNVLVCVLAHHFGKEFTPPVQAAYQKVVAGVANALAHKYH", "mouse", "P68871")
+dp = Dotplot.from_sequences(seq1, seq2)
 
-print(dp)
-dp.saveTxt("dotplot.txt")
+#print(seq1.name)
+dp.grafic("test")
+#dp.saveTxt("dotplot.txt")
