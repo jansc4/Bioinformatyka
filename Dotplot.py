@@ -47,7 +47,7 @@ class Dotplot:
     def saveTxt(self, filename):
         np.savetxt(filename, self.array, fmt="%d")
 
-    def grafic(self, title="Macierz kropkowa"):
+    def graphic(self, title="Macierz kropkowa"):
         plt.imshow(self.array, cmap='binary', interpolation='nearest')
         plt.title(title)
         plt.xlabel(self.seq2Name + " " + self.seq2Id)

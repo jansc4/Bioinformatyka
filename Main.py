@@ -89,5 +89,5 @@ seq2 = Sequence("MVHLTPEEKSAVTALWGKVNVDEVGGEALGRLLVVYPWTQRFFESFGDLSTPDAVMGNPKVKA
 dp = Dotplot.from_sequences(seq1, seq2)
 
 #print(seq1.name)
-dp.grafic("test")
+dp.graphic("test")
 #dp.saveTxt("dotplot.txt")
