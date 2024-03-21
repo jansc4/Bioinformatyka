@@ -2,7 +2,7 @@ import requests
 from Sequence import Sequence
 from Dotplot import Dotplot
 import re
-
+import numpy as np
 
 def seqConstructor(fasta_data):
     lines = fasta_data.split('\n')
@@ -75,10 +75,28 @@ def start():
         else:
             print("Błędna opcja")
 
+
 def filter(dotplot, threshold, window):
+    dp_array = np.array(dotplot.array)
+    dp_size = dp_array.shape[0]
+    diag = []
 
+    for i in range(dp_size - 1):
+        diag.append(np.diag(dp_array, k=i))
 
-    return dotplot
+    for i in range(len(diag)):
+        dp1 = np.array(diag[i])
+        dp1_len = len(dp1)  # Poprawiony fragment kodu
+        for j in range(dp1_len):
+            window_sum = np.sum(dp1[j:j + window])
+            if window_sum >= threshold:
+                dp1[j] = 1
+            else:
+                dp1[j] = 0
+        diag[i] = dp1
+
+    return diag
+
 
 print("Wybierz pierwszą sekwencję:")
 #seq1 = start()
@@ -89,5 +107,51 @@ seq2 = Sequence("MVHLTPEEKSAVTALWGKVNVDEVGGEALGRLLVVYPWTQRFFESFGDLSTPDAVMGNPKVKA
 dp = Dotplot.from_sequences(seq1, seq2)
 
 #print(seq1.name)
-dp.graphic("test")
-#dp.saveTxt("dotplot.txt")
+#dp.graphic("test")
+dp.saveTxt("dotplot.txt")
+
+
+#print(dp)
+dpf = filter(dp, 2, 3)
+print("-------------")
+print(dpf)
+dpf = np.asarray(dpf)
+print(dpf)
+#dpf = Dotplot(dpf)
+#dpf.saveTxt("dotplotF.txt")
+'''
+
+window = 3
+threshold = 3
+
+for i in range(len(dpf)):
+    tmp_list = []
+    for j in range(len(dpf[i])):
+        if len(dpf[i]) - j < window - 1:
+            tmp_list.append(0)
+        else:
+            window_sum = np.sum(dpf[i][j:j + (window - 1)])
+            if window_sum > threshold:
+                tmp_list.append(1)
+            else:
+                tmp_list.append(0)
+    dpf[i] = tmp_list
+
+dp1 = np.array(dpf[0])
+k=0
+dp1_len = len(dpf)
+print(dp1_len)
+for j in range(dp1_len):
+    k+=1
+    window_sum = np.sum(dp1[j:j + window])
+    if window_sum >= threshold:
+        dp1[j] = 1
+    else:
+        dp1[j] = 0
+    #print(window_sum)
+    #print(k)
+dpf[0] = dp1
+print(dp1)
+print("-------------")
+print(dpf[0])
+'''
