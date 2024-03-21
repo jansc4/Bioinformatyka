@@ -76,26 +76,20 @@ def start():
             print("Błędna opcja")
 
 
-def filter(dotplot, threshold, window):
-    dp_array = np.array(dotplot.array)
-    dp_size = dp_array.shape[0]
-    diag = []
+def filtruj_tablice(tablica, okno, threshold):
+    tablica = tablica.array
+    wynik = np.zeros_like(tablica)  # Tworzy tablicę wynikową, początkowo wypełnioną zerami
+    wysokość, szerokość = tablica.shape
 
-    for i in range(dp_size - 1):
-        diag.append(np.diag(dp_array, k=i))
+    for i in range(wysokość - okno + 1):
+        for j in range(szerokość - okno + 1):
+            suma_przekątnej = np.sum(np.diagonal(tablica[i:i + okno, j:j + okno]))
+            if suma_przekątnej >= threshold:
+                wynik[i, j] = 1
 
-    for i in range(len(diag)):
-        dp1 = np.array(diag[i])
-        dp1_len = len(dp1)  # Poprawiony fragment kodu
-        for j in range(dp1_len):
-            window_sum = np.sum(dp1[j:j + window])
-            if window_sum >= threshold:
-                dp1[j] = 1
-            else:
-                dp1[j] = 0
-        diag[i] = dp1
+    return wynik
 
-    return diag
+
 
 
 print("Wybierz pierwszą sekwencję:")
@@ -108,17 +102,21 @@ dp = Dotplot.from_sequences(seq1, seq2)
 
 #print(seq1.name)
 #dp.graphic("test")
-dp.saveTxt("dotplot.txt")
+#dp.saveTxt("dotplot.txt")
 
-
+print(dp.size)
 #print(dp)
-dpf = filter(dp, 2, 3)
+#dp_array = dp.array
+#print(type(dp_array))
+#dp_len = dp_array.shape[0]
+#print(dp_len)
+dpf = filtruj_tablice(dp, 5, 3)
 print("-------------")
 print(dpf)
-dpf = np.asarray(dpf)
-print(dpf)
-#dpf = Dotplot(dpf)
-#dpf.saveTxt("dotplotF.txt")
+#dpf = np.asarray(dpf)
+#print(dpf)
+dpf = Dotplot(dpf)
+dpf.save_txt("dotplotF.txt")
 '''
 
 window = 3

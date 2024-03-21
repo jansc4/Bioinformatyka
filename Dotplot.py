@@ -2,13 +2,15 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 class Dotplot:
-    def __init__(self, array):
+    def __init__(self, array, seq1Id="1", seq2Id="2", seq1Name="Seq 1", seq2Name="Seq 2"):
         self.array = array
-        self.size = len(array)
-        self.seq1Id = "1"
-        self.seq2Id = "2"
-        self.seq1Name = "Seq 1"
-        self.seq2Name = "Seq 2"
+        self.size = array.shape
+        self.seq1Id = seq1Id
+        self.seq2Id = seq2Id
+        self.seq1Name = seq1Name
+        self.seq2Name = seq2Name
+        def dp_size(self):
+            return self.size
 
     @classmethod
     def from_sequences(cls, seq1, seq2):
@@ -22,35 +24,24 @@ class Dotplot:
                 if seq1.sequence[i] == seq2.sequence[j]:
                     dp[i, j] = 1
 
-        # Utwórz nową instancję klasy Dotplot i przekaż dp jako argument konstruktora
-        instance = cls(dp)
-
-        # Ustaw atrybuty instancji na podstawie przekazanych sekwencji
-        instance.seq1Id = seq1.id
-        instance.seq2Id = seq2.id
-        instance.seq1Name = seq1.name
-        instance.seq2Name = seq2.name
-
-        return instance
+        return cls(dp, seq1.id, seq2.id, seq1.name, seq2.name)
 
     def __getitem__(self, index):
-        n, m = index
-        return self.array[n][m]
+        return self.array[index]
 
     def __setitem__(self, index, val):
-        n, m = index
-        self.array[n][m] = val
+        self.array[index] = val
 
     def __str__(self):
         return str(self.array)
 
-    def saveTxt(self, filename):
+    def save_txt(self, filename):
         np.savetxt(filename, self.array, fmt="%d")
 
-    def graphic(self, title="Macierz kropkowa"):
+    def graphic(self, title="Dotplot Matrix"):
         plt.imshow(self.array, cmap='binary', interpolation='nearest')
         plt.title(title)
-        plt.xlabel(self.seq2Name + " " + self.seq2Id)
-        plt.ylabel(self.seq1Name + " " + self.seq1Id)
+        plt.xlabel(f"{self.seq2Name} {self.seq2Id}")
+        plt.ylabel(f"{self.seq1Name} {self.seq1Id}")
         plt.grid(True, which='both', linestyle='--', linewidth=0.5, color='gray')
         plt.show()
