@@ -9,8 +9,6 @@ class Dotplot:
         self.seq2Id = seq2Id
         self.seq1Name = seq1Name
         self.seq2Name = seq2Name
-        def dp_size(self):
-            return self.size
 
     @classmethod
     def from_sequences(cls, seq1, seq2):
@@ -38,10 +36,33 @@ class Dotplot:
     def save_txt(self, filename):
         np.savetxt(filename, self.array, fmt="%d")
 
-    def graphic(self, title="Dotplot Matrix"):
+    def graphic(self, filename, title="Dotplot Matrix", window=None, threshold=None):
         plt.imshow(self.array, cmap='binary', interpolation='nearest')
         plt.title(title)
         plt.xlabel(f"{self.seq2Name} {self.seq2Id}")
         plt.ylabel(f"{self.seq1Name} {self.seq1Id}")
         plt.grid(True, which='both', linestyle='--', linewidth=0.5, color='gray')
+
+        # Dodanie skali
+        plt.colorbar(label='Intensity')
+
+        # Dodanie legendy z parametrami filtracji
+        if window is not None and threshold is not None:
+            plt.text(0.9, -0.1, f"Window: {window}, Threshold: {threshold}",
+                     horizontalalignment='center', verticalalignment='center', transform=plt.gca().transAxes)
+
+        plt.savefig(filename)
         plt.show()
+
+    def filter(self, window, threshold):
+        wynik = np.zeros_like(self.array)
+        high, width = self.array.shape
+
+        for i in range(high - window + 1):
+            for j in range(width - window + 1):
+                sum_diag = np.sum(np.diagonal(self.array[i:i+window, j:j+window]))
+                if sum_diag >= threshold:
+                    wynik[i, j] = 1
+
+        return Dotplot(wynik, self.seq1Id, self.seq2Id, self.seq1Name, self.seq2Name)
+
