@@ -66,3 +66,31 @@ class Dotplot:
 
         return Dotplot(wynik, self.seq1Id, self.seq2Id, self.seq1Name, self.seq2Name)
 
+    def needleman_wunsch(self, match, mismatch, gap):
+        high, width = self.array.shape
+        wynik = np.zeros((high + 1, width + 1))
+        supprot_matrix = np.zeros((high, width))
+
+        for i in range(1, width + 1):
+            wynik[i][0] = wynik[i-1][0]  + gap
+
+        for i in range(1, high + 1):
+            wynik[0][i] = wynik[0][i-1] + gap
+
+        #print(wynik)
+
+        for i in range(1, high + 1):
+            for j in range(1, width + 1):
+                match_score = 0
+                match_score = match if self.array[i - 1, j - 1] else mismatch  # Indeksowanie od zera
+                wynik[i, j] = max(wynik[i - 1, j] + gap, wynik[i, j - 1] + gap, wynik[i - 1, j - 1] + match_score)
+
+         #zapis do pliku dla widocznosci
+        np.savetxt("needleman", wynik, fmt="%d")
+        print(wynik)
+
+        '''
+        U = 0       do algorytmu i-1,j-1 przepisz literkę
+        L = 1       do algorytmu i-1, j wstaw gap w gornej sekwencji
+        D = 2       do algorytmu i, j-1 wstaw gap w lewej sekwencji
+        '''
