@@ -1,0 +1,10 @@
+Sekwencja 1: WA
+Sekwencja 2: WA
+Parametry programu:
+Match: 2
+Mismatch: -1
+Gap: -2
+Wynik dopasowania: 4
+D³ugoœæ dopasowania: 2
+Procent identycznych pozycji: 100.00%
+Procent przerw: 0.00%

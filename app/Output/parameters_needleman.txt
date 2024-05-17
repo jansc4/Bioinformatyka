@@ -1,0 +1,10 @@
+Sekwencja 1: CQWARD
+Sekwencja 2: CADARD
+Parametry programu:
+Match: 2
+Mismatch: -1
+Gap: -2
+Wynik dopasowania: 6
+D³ugoœæ dopasowania: 6
+Procent identycznych pozycji: 66.67%
+Procent przerw: 0.00%
