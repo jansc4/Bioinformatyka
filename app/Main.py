@@ -25,9 +25,9 @@ def main():
     from app.Classes.SequenceAlignment import SequenceAlignment
 
     # Tworzymy obiekty sekwencji
-    seq1 = Sequence("CATWALK", "seq1_id")
-    seq2 = Sequence("CQWARD", "seq2_id")
-    seq3 = Sequence("CADARDC", "seq3_id")
+    seq1 = Sequence("CATWALK", "seq1_id", 1)
+    seq2 = Sequence("CQWARD", "seq2_id", 2)
+    seq3 = Sequence("CADARDC", "seq3_id", 3)
 
     # Tworzymy obiekt klasy SequenceAlignment
     #alignment = SequenceAlignment(seq1, seq2)
@@ -56,12 +56,17 @@ def main():
 
     # Wyświetlamy graficzną reprezentację macierzy z ścieżką
     #alignment.sequence_path(support_matrix_1, "neddleman_path")
-    alignments, score_matrix = MultipleSequenceAlignment(match_score, mismatch_score, gap_penalty,seq1, seq2, seq3)._msa_center_seq()
+    # alignments, score_matrix = MultipleSequenceAlignment(match_score, mismatch_score, gap_penalty,seq1, seq2, seq3)._msa_sequences()
+    #
+    # for a in alignments:
+    #     print("[")
+    #     for i in a:
+    #         print(i)
+    #     print("]")
+    #
+    # max_score_id = MultipleSequenceAlignment(match_score, mismatch_score, gap_penalty,seq1, seq2, seq3)._msa_center_seq()
+    # print(max_score_id)
+    MultipleSequenceAlignment(match_score, mismatch_score, gap_penalty,seq1, seq2, seq3).msa()
 
-    for a in alignments:
-        print("[")
-        for i in a:
-            print(i)
-        print("]")
 if __name__ == "__main__":
     main()

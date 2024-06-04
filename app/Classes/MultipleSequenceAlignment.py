@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-
+from app.Classes.Alignment import Alignment
 from app.Classes.Sequence import Sequence
 from app.Classes.SequenceAlignment import SequenceAlignment
 import numpy as np
@@ -46,7 +46,7 @@ class MultipleSequenceAlignment:
                         self.alignments.append(temp)
 
         self._sum_alignment_scores()
-        print(self.score_matrix)
+        #print(self.score_matrix)
         return self.alignments, self.score_matrix
 
     def _msa_center_seq(self):
@@ -59,6 +59,18 @@ class MultipleSequenceAlignment:
         max_score_sequence_id = self.sequences[max_score_index].get_id()  # ID sekwencji z najwyższym wynikiem
         return max_score_sequence_id
 
-    def msa(self):
+    def msa(self, alignment_id=0):
         max_score_sequence_id = self._msa_center_seq()
+        msa_alignment = Alignment(max_score_sequence_id, alignment_id)
 
+        for al in self.alignments:
+            if al[0].get_id() == max_score_sequence_id or al[1].get_id() == max_score_sequence_id:
+                for i in al:
+                    if not msa_alignment.alignment_check(i):
+                        msa_alignment.add_alignment(i)
+
+        print(msa_alignment.alignment())
+        print(msa_alignment)
+
+        # for al in self.alignments:
+        #     if al[0].get_id() or al[1].get_id() == max_score_sequence_id:
